@@ -106,7 +106,7 @@ class LinkedList(object):
         node = node if node is not None else self.tailer
         n = n if n is not None else self.__size
         while n > 0 and node.pred_node.data is not None:
-            if node.pred_node.data <= data:
+            if node.pred_node.data == data:
                 return node.pred_node
             node = node.pred_node
             n -= 1
@@ -125,7 +125,7 @@ class LinkedList(object):
         node.pred_node.succ_node = node.succ_node
         node.succ_node.pred_node = node.pred_node
         self.__size -= 1
-        return node
+        return node.data
 
     def sort(self, method):
         if method == 'insert_sort':
@@ -142,9 +142,10 @@ class LinkedList(object):
         node = self.head.succ_node
         r = 0
         while r < self.__size:
-            match = self.find(node.data, r, node)
+            match = self.search(node.data, r, node)
             self.insert_a(self.head if match is None else match, node.data)
-            node = self.remove(node).succ_node
+            self.remove(node)
+            node = node.succ_node
             r += 1
 
     def selection_sort(self):
@@ -168,7 +169,7 @@ class LinkedList(object):
         node = self.tailer
         while r > 1:
             match = find_max(r)
-            self.insert_b(node, self.remove(match).data)
+            self.insert_b(node, self.remove(match))
             node = node.pred_node
             r -= 1
 
@@ -182,7 +183,7 @@ class LinkedList(object):
                 node_p = node_p.succ_node
                 n -= 1
             else:
-                self.insert_b(node_p, self.remove(node_q).data)
+                self.insert_b(node_p, self.remove(node_q))
                 node_q = node_q.succ_node
                 m -= 1
 
