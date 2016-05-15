@@ -153,7 +153,7 @@ class LinkedList(object):
             return
 
         def find_max(r):
-            max_data = -sys.maxint - 1
+            max_data = -sys.maxsize - 1
             max_node = None
             node = self.head.succ_node
             n = 0
@@ -202,3 +202,24 @@ class LinkedList(object):
         self.merge_sort(node_q, n - middle)
 
         self.__merge(node_p, middle, node_q, n - middle)
+
+    def traverse(self, func):
+        if self.__size < 1:
+            return
+
+        node = self.head.succ_node
+        while node.data is not None:
+            func(node)
+            node = node.succ_node
+
+    def increase(self):
+        def addOne(node):
+            node.data += 1
+
+        self.traverse(addOne)
+
+    def half(self):
+        def halfValue(node):
+            node.data /= 2
+
+        self.traverse(halfValue)
