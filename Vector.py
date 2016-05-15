@@ -27,10 +27,10 @@ class Vector:
             middle = (start + end) // 2
             if value < self.data[middle]:
                 end = middle
-            elif value > self.data[middle]:
-                start = middle
             else:
-                return middle
+                start = middle + 1
+
+        return start - 1
 
     def bubble_sort(self, lo=None,  hi=None):
         if self.size() < 2:
@@ -76,3 +76,18 @@ class Vector:
         self.merge_sort(middle, hi)
 
         self.__merge(lo, middle, hi)
+
+    def insert_sort(self, lo=None, hi=None):
+        lo = 0 if lo is None else lo
+        hi = self.size() if hi is None else hi
+
+        if (hi - lo) < 2:
+            return
+
+        i = lo
+        while i < hi:
+            data = self.data[i]
+            match = self.search(data, lo, i) + 1
+            del self.data[i]
+            self.data.insert(match, data)
+            i += 1
