@@ -1,3 +1,5 @@
+import sys
+
 class Vector:
     def __init__(self, fromList=None):
         self.data = [] if fromList is None else fromList
@@ -91,3 +93,33 @@ class Vector:
             del self.data[i]
             self.data.insert(match, data)
             i += 1
+
+    def select_max(self, lo, hi):
+        lo = 0 if lo is None else lo
+        hi = self.size() if hi is None else hi
+
+        if (hi - lo) < 2:
+            return lo
+
+        max_value = -sys.maxsize
+        max_index = -1
+        for i in range(lo, hi):
+            if self.data[i] >= max_value:
+                max_value = self.data[i]
+                max_index = i
+
+        return max_index
+
+    def selection_sort(self, lo=None, hi=None):
+        lo = 0 if lo is None else lo
+        hi = self.size() if hi is None else hi
+
+        if (hi - lo) < 2:
+            return
+
+        n = hi
+        while n > lo:
+            match = self.select_max(lo, n)
+            self.data.insert(n, self.data[match])
+            del self.data[match]
+            n -= 1

@@ -152,7 +152,7 @@ class LinkedList(object):
         if self.__size < 2:
             return
 
-        def find_max(r):
+        def select_max(r):
             max_data = -sys.maxsize - 1
             max_node = None
             node = self.head.succ_node
@@ -168,7 +168,7 @@ class LinkedList(object):
         r = self.__size
         node = self.tailer
         while r > 1:
-            match = find_max(r)
+            match = select_max(r)
             self.insert_b(node, self.remove(match))
             node = node.pred_node
             r -= 1
