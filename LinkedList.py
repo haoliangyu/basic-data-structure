@@ -49,6 +49,45 @@ class LinkedList(object):
 
         return ', '.join(map(str, data_list))
 
+    def __swap(self, node_p, node_q):
+        p_pred = node_p.pred_node
+        p_succ = node_p.succ_node
+
+        q_pred = node_q.pred_node
+        q_succ = node_q.succ_node
+
+        # node_p and node_q are close to each other
+        if node_p.pred_node is node_q:
+            q_pred.succ_node = node_p
+            node_p.pred_node = q_pred
+
+            node_q.pred_node = node_p
+            node_p.succ_node = node_q
+
+            node_q.succ_node = p_succ
+            p_succ.pred_node = node_q
+        elif node_p.succ_node is node_q:
+            p_pred.succ_node = node_q
+            node_q.pred_node = p_pred
+
+            node_p.pred_node = node_q
+            node_q.succ_node = node_p
+
+            node_p.succ_node = q_succ
+            q_succ.pred_node = node_p
+        else:
+            p_pred.succ_node = node_q
+            p_succ.pred_node = node_q
+
+            q_pred.succ_node = node_p
+            q_succ.pred_node = node_p
+
+            node_p.pred_node = q_pred
+            node_p.succ_node = q_succ
+
+            node_q.pred_node = p_pred
+            node_q.succ_node = p_succ
+
     def insert_as_first(self, data):
         self.__size += 1
         return self.head.insert_as_succ(data)
@@ -157,7 +196,7 @@ class LinkedList(object):
             max_node = None
             node = self.head.succ_node
             n = 0
-            while n < r:
+            while n < r and node.data is not None:
                 if node.data > max_data:
                     max_node = node
                     max_data = node.data
@@ -166,11 +205,11 @@ class LinkedList(object):
             return max_node
 
         r = self.__size
-        node = self.tailer
+        node = self.tailer.pred_node
         while r > 1:
             match = select_max(r)
-            self.insert_b(node, self.remove(match))
-            node = node.pred_node
+            self.__swap(node, match)
+            node = match.pred_node
             r -= 1
 
     def __merge(self, node_p, n, node_q, m):

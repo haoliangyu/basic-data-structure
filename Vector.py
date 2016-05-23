@@ -103,7 +103,7 @@ class Vector:
 
         max_value = -sys.maxsize
         max_index = -1
-        for i in range(lo, hi):
+        for i in range(lo, hi + 1):
             if self.data[i] >= max_value:
                 max_value = self.data[i]
                 max_index = i
@@ -117,9 +117,8 @@ class Vector:
         if (hi - lo) < 2:
             return
 
-        n = hi
+        n = hi - 1
         while n > lo:
             match = self.select_max(lo, n)
-            self.data.insert(n, self.data[match])
-            del self.data[match]
+            self.__swap(n, match)
             n -= 1
