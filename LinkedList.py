@@ -67,14 +67,7 @@ class LinkedList(object):
             node_q.succ_node = p_succ
             p_succ.pred_node = node_q
         elif node_p.succ_node is node_q:
-            p_pred.succ_node = node_q
-            node_q.pred_node = p_pred
-
-            node_p.pred_node = node_q
-            node_q.succ_node = node_p
-
-            node_p.succ_node = q_succ
-            q_succ.pred_node = node_p
+            self.__swap(node_q, node_p)
         else:
             p_pred.succ_node = node_q
             p_succ.pred_node = node_q
@@ -87,6 +80,20 @@ class LinkedList(object):
 
             node_q.pred_node = p_pred
             node_q.succ_node = p_succ
+
+    def reverse(self):
+        if (self.__size < 2):
+            return
+
+        i = self.__size
+        left = self.head.succ_node
+        right = self.tailer.pred_node
+
+        while i > 1:
+            left = left.succ_node
+            right = right.pred_node
+            self.__swap(left.pred_node, right.succ_node)
+            i -= 2
 
     def insert_as_first(self, data):
         self.__size += 1
