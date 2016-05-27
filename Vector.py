@@ -15,6 +15,15 @@ class Vector:
     def size(self):
         return len(self.data)
 
+    def reverse(self, lo=None, hi=None):
+        lo = 0 if lo is None else lo
+        hi = len(self.data) - 1 if hi is None else hi
+
+        while lo < hi:
+            self.__swap(lo, hi)
+            lo += 1
+            hi -= 1
+
     def find(self, value):
         for i in range(self.size()):
             if self.data[i] == value:
@@ -34,7 +43,7 @@ class Vector:
 
         return start - 1
 
-    def bubble_sort(self, lo=None,  hi=None):
+    def bubble_sort(self, lo=None, hi=None):
         if self.size() < 2:
             return
 
