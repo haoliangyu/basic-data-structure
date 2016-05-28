@@ -269,3 +269,23 @@ class LinkedList(object):
             node.data /= 2
 
         self.traverse(halfValue)
+
+    def josephus(self, k):
+        if self.__size == 0:
+            return None
+
+        n = k
+        node = self.head.succ_node
+
+        while self.__size > 1:
+            while n > 1:
+                n -= 1
+                node = node.succ_node
+                if node.data is None:
+                    node = self.head.succ_node
+
+            self.remove(node)
+            node = node.succ_node
+            n = k
+
+        return self.head.succ_node
