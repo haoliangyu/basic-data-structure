@@ -1,3 +1,5 @@
+import random
+
 from LinkedList import LinkedList
 
 class ListStack(LinkedList):
@@ -9,7 +11,7 @@ class ListStack(LinkedList):
         return self.tailer.pred_node.pred_node is None
 
     def push(self, data):
-        self.tailer.insert_as_pred(data)
+        self.insert_as_last(data)
 
     def pop(self):
         if self.empty():
@@ -22,3 +24,22 @@ class ListStack(LinkedList):
             return None
 
         return self.tailer.pred_node
+
+    def permutate(self):
+        s = ListStack()
+        b = ListStack()
+
+        while self.size() > 0:
+            if s.size() == 0:
+                s.push(self.pop())
+            else:
+                coin = random.random()
+                if coin < 0.5:
+                    s.push(self.pop())
+                else:
+                    b.push(s.pop())
+
+        while s.size() > 0:
+            b.push(s.pop())
+
+        return b
