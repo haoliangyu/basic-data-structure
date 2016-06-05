@@ -43,3 +43,29 @@ class ListStack(LinkedList):
             b.push(s.pop())
 
         return b
+
+    def get_data(self):
+        data = []
+        node = self.head.succ_node
+
+        while node.data is not None:
+            data.append(node.data)
+            node = node.succ_node
+
+        return data
+
+    def equals(self, stack):
+        if self.size() != stack.size():
+            return False
+
+        this_data = self.get_data()
+        stack_data = self.get_data()
+
+        n = self.size()
+        i = 0
+        while i < n:
+            if this_data[i] != stack_data[i]:
+                return False
+            i += 1
+
+        return True

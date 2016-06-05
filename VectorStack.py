@@ -17,7 +17,7 @@ class VectorStack(Vector):
         return self.data.pop()
 
     def top(self):
-        return self.data[-1]
+        return self.data[-1] if self.size() > 0 else None
 
     def permutate(self):
         s = VectorStack()
@@ -37,3 +37,22 @@ class VectorStack(Vector):
             b.push(s.pop())
 
         return b
+
+    def get_data(self):
+        stack_data = [self.data[i] for i in range(self.size())]
+        return stack_data
+
+    def equals(self, stack):
+        if self.size() != stack.size():
+            return False
+
+        stack_data = stack.get_data()
+
+        n = self.size()
+        i = 0
+        while i < n:
+            if self.data[i] != stack_data[i]:
+                return False
+            i += 1
+
+        return True
