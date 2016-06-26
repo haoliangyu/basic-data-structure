@@ -11,3 +11,5 @@ basic data strcture in python from THU Data Structure 3rd Edition, including:
 * Queue based on Vector and LinkedList (Chapter 4)
 
 * Deque based on Vector and LinkedList (Chapter 4)
+
+* BinTree based on BinNode (Chapter 5)
