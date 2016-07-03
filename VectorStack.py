@@ -56,3 +56,7 @@ class VectorStack(Vector):
             i += 1
 
         return True
+
+    def clear(self):
+        while not self.empty():
+            self.pop()

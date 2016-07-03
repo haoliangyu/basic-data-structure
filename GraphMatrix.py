@@ -1,5 +1,6 @@
 from GraphElement import Edge, Vertex
 from ListQueue import ListQueue
+from ListStack import ListStack
 
 class GraphMatrix(object):
 
@@ -174,3 +175,33 @@ class GraphMatrix(object):
         for i in range(self.n):
             if self.vertices[i].status == 'UNDISCOVERED':
                 self.DFS(i, clock)
+
+    def TSort(self, v, stack):
+        cur_vertex = self.vertices[v]
+        cur_vertex.status = 'DISCOVERED'
+
+        u = self.first_neighbor(v)
+        while u > -1:
+            neighbor_vertex = self.vertices[u]
+            if neighbor_vertex.status == 'UNDISCOVERED':
+                if not self.TSort(u, stack):
+                    return False
+            elif neighbor_vertex.status == 'DISCOVERED':
+                return False
+
+            u = self.next_neighbor(v, u)
+
+        stack.push(cur_vertex)
+        return True
+
+    def tsort(self):
+        self.reset()
+
+        stack = ListStack()
+        for i in range(self.n):
+            if self.vertices[i].status == 'UNDISCOVERED':
+                if not self.TSort(i, stack):
+                    stack.clear()
+                    break
+
+        return stack
