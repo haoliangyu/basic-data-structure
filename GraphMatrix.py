@@ -140,3 +140,37 @@ class GraphMatrix(object):
         for i in range(self.n):
             if self.vertices[i].status == 'UNDISCOVERED':
                 self.BFS(i, clock)
+
+    def DFS(self, v, clock):
+        clock += 1
+
+        cur_vertex = self.vertices[v]
+        cur_vertex.d_time = clock
+        cur_vertex.status = 'DISCOVERED'
+
+        u = self.first_neighbor(v)
+        while u > -1:
+            neighbor_vertex = self.vertices[u]
+            if neighbor_vertex.status == 'UNDISCOVERED':
+                neighbor_vertex.parent = v
+                self.get_edge(v, u).type = 'TREE'
+                self.DFS(u, clock)
+            elif neighbor_vertex.status == 'DISCOVERED':
+                self.get_edge(v, u).type = 'BACKWARD'
+            else:
+                self.get_edge(v, u).type = 'FORWARD' if cur_vertex.d_time < neighbor_vertex.d_time else 'CROSS'
+
+            u = self.next_neighbor(v, u)
+
+        clock += 1
+
+        cur_vertex.status = 'VISITED'
+        cur_vertex.f_time = clock
+
+    def dfs(self):
+        self.reset()
+        clock = 0
+
+        for i in range(self.n):
+            if self.vertices[i].status == 'UNDISCOVERED':
+                self.DFS(i, clock)
