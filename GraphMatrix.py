@@ -1,4 +1,5 @@
-from GraphElement import Edge
+from GraphElement import Edge, Vertex
+from ListQueue import ListQueue
 
 class GraphMatrix(object):
 
@@ -54,6 +55,9 @@ class GraphMatrix(object):
     def exists(self, i, j):
         return 0 <= i < self.n and 0 <= j < self.n and self.edges[i][j] is not None
 
+    def get_edge(self, i, j):
+        return self.edges[i][j]
+
     def type(self, i, j):
         return self.edges[i][j].type
 
@@ -80,3 +84,59 @@ class GraphMatrix(object):
         self.vertices[j].in_degree -= 1
 
         return edge
+
+    def first_neighbor(self, i):
+        return self.next_neighbor(i, 0)
+
+    def next_neighbor(self, i, j):
+        for k in range(j + 1, self.n):
+            if self.exists(i, k):
+                return k
+
+        return -1
+
+    def reset(self):
+        for i in range(self.n):
+            vertex = self.vertices[i]
+            vertex.status = 'UNDISCOVERED'
+            vertex.parent = -1
+            vertex.f_time = -1
+            vertex.d_time = -1
+            vertex.priority = Vertex.init_priority()
+
+            for j in range(self.n):
+                if self.exists(i, j):
+                    self.edges[i][j].type = 'UNDETERMINED'
+
+    def BFS(self, i, clock):
+        queue = ListQueue()
+
+        self.vertices[i].status = 'DISCOVERED'
+        queue.enqueue(i)
+
+        while not queue.empty():
+            v = queue.dequeque()
+
+            clock += 1
+            self.vertices[v].d_time = clock
+
+            u = self.first_neighbor(v)
+            while u > -1:
+                if self.vertices[u].status == 'UNDISCOVERED':
+                    self.vertices[u].status = 'DISCOVERED'
+                    self.get_edge(v, u).type = 'TREE'
+                    self.vertices[u].parent = v
+                    queue.enqueue(u)
+                else:
+                    self.get_edge(v, u).type = 'CROSS'
+                u = self.next_neighbor(v, u)
+
+            self.vertices[v].status = 'VISITED'
+
+    def bfs(self):
+        self.reset()
+
+        clock = 0
+        for i in range(self.n):
+            if self.vertices[i].status == 'UNDISCOVERED':
+                self.BFS(i, clock)

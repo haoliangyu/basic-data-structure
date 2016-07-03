@@ -15,3 +15,5 @@ basic data strcture in python from THU Data Structure 3rd Edition, including:
 * BinTree based on BinNode (Chapter 5)
 
 * GraphMatrix based on Vector and Edge (Chapter 6)
+
+* GraphList based on Vector and Edge (Chapter 6)
