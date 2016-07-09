@@ -251,3 +251,42 @@ class GraphMatrix(object):
             if self.vertices[i].status == 'UNDISCOVERED':
                 self.BCC(i, clock, stack)
                 stack.pop()
+
+    def PFS(self, v, priority_updater):
+        self.vertices[v].priority = 0
+        self.vertices[v].status = 'VISITED'
+        self.vertices[v].parent = -1
+
+        while True:
+            u = self.first_neighbor(v)
+            while u > -1:
+                priority_updater(self, v, u)
+                u = self.next_neighbor(v, u)
+
+            next_one = None
+            priority = Vertex.init_priority()
+            u = self.first_neighbor(v)
+            while u > -1:
+                neighbor_vertex = self.vertices[u]
+                if neighbor_vertex.status == 'UNDISCOVERED':
+                    if neighbor_vertex.priority < priority:
+                        next_one = u
+                        priority = neighbor_vertex.priority
+
+                u = self.next_neighbor(v, u)
+
+            next_neighbor = self.vertices[next_one]
+            if next_neighbor.status == 'VISITED':
+                break
+
+            next_neighbor.status = 'VISITED'
+            next_neighbor.parent = v
+
+            self.get_edge(v, u).type = 'TREE'
+
+    def pfs(self, priority_updater):
+        self.reset()
+
+        for i in range(self.n):
+            if self.vertices[i].status == 'UNDISCOVERED':
+                self.PFS(i, priority_updater)
