@@ -205,3 +205,49 @@ class GraphMatrix(object):
                     break
 
         return stack
+
+    def _hca(self, vertex):
+        return vertex.f_time
+
+    def BCC(self, v, clock, stack):
+        clock += 1
+
+        cur_vertex = self.vertices[v]
+        cur_vertex.d_time = clock
+        cur_vertex.status = 'DISCOVERED'
+        stack.push(v)
+
+        u = self.first_neighbor(v)
+        while u > -1:
+            neighbor_vertex = self.vertices[u]
+            if neighbor_vertex.status == 'UNDISCOVERED':
+                neighbor_vertex.parent = v
+                self.get_edge(v, u).type = 'TREE'
+                self.BCC(u, clock, stack)
+
+                if neighbor_vertex.f_time < cur_vertex.d_time:
+                    cur_vertex.f_time = neighbor_vertex.f_time if neighbor_vertex.f_time < cur_vertex.f_time else \
+                                             cur_vertex.f_time
+                else:
+                    temp = stack.pop()
+                    while temp != v:
+                        temp = stack.pop()
+                    stack.push(v)
+            elif neighbor_vertex.status == 'DISCOVERED':
+                self.get_edge(v, u).type = 'BACKWARD'
+                if cur_vertex.parent != u:
+                    cur_vertex.f_time = neighbor_vertex.f_time if neighbor_vertex.f_time < cur_vertex.f_time else \
+                                             cur_vertex.f_time
+
+            u = self.next_neighbor(v, u)
+        cur_vertex.status = 'VISITED'
+
+    def bcc(self):
+        self.reset()
+        clock = 0
+        stack = ListStack()
+
+        for i in range(self.n):
+            if self.vertices[i].status == 'UNDISCOVERED':
+                self.BCC(i, clock, stack)
+                stack.pop()
