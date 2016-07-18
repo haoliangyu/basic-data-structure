@@ -59,6 +59,9 @@ class GraphMatrix(object):
     def get_edge(self, i, j):
         return self.edges[i][j]
 
+    def get_vertex(self, i):
+        return self.vertices[i]
+
     def type(self, i, j):
         return self.edges[i][j].type
 
@@ -258,24 +261,23 @@ class GraphMatrix(object):
         self.vertices[v].parent = -1
 
         while True:
+            # update priority of children
             u = self.first_neighbor(v)
             while u > -1:
-                priority_updater(self, v, u)
+                priority_updater(v, u)
                 u = self.next_neighbor(v, u)
 
-            next_one = None
+            # find the global minimal
+            next_one = v
             priority = Vertex.init_priority()
-            u = self.first_neighbor(v)
-            while u > -1:
-                neighbor_vertex = self.vertices[u]
+            for i in range(self.n):
+                neighbor_vertex = self.get_vertex(i)
                 if neighbor_vertex.status == 'UNDISCOVERED':
                     if neighbor_vertex.priority < priority:
-                        next_one = u
+                        next_one = i
                         priority = neighbor_vertex.priority
 
-                u = self.next_neighbor(v, u)
-
-            next_neighbor = self.vertices[next_one]
+            next_neighbor = self.get_vertex(next_one)
             if next_neighbor.status == 'VISITED':
                 break
 
@@ -288,5 +290,19 @@ class GraphMatrix(object):
         self.reset()
 
         for i in range(self.n):
-            if self.vertices[i].status == 'UNDISCOVERED':
+            if self.get_vertex(i).status == 'UNDISCOVERED':
                 self.PFS(i, priority_updater)
+
+    def priority_updater_DFS(self, v, n):
+        neighbor_vertex = self.get_vertex(n)
+        cur_vertex = self.get_vertex(v)
+        if neighbor_vertex.status == 'UNDISCOVERED':
+            neighbor_vertex = cur_vertex.priority - 1
+            neighbor_vertex.parent = v
+
+    def priority_updater_BFS(self, v, n):
+        neighbor_vertex = self.get_vertex(n)
+        cur_vertex = self.get_vertex(v)
+        if neighbor_vertex.status == 'UNDISCOVERED':
+            neighbor_vertex = cur_vertex.priority + 1
+            neighbor_vertex.parent = v
