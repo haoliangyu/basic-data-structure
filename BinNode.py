@@ -15,6 +15,9 @@ class BinNode(object):
         self.npl = npl
         self.color = color
 
+    def __str__(self):
+        return str(self.data)
+
     def get_height(self):
         return self.height
 
@@ -25,6 +28,19 @@ class BinNode(object):
     def insert_as_right_child(self, data):
         self.right_child = BinNode(data, self)
         return self.right_child
+
+    def swap(self, node):
+        cur_parent = self.parent
+        cur_left_child = self.left_child
+        cur_right_child = self.right_child
+
+        self.parent = node.parent
+        self.left_child = node.left_child
+        self.right_child = node.right_child
+
+        node.parent = cur_parent
+        node.left_child = cur_left_child
+        node.right_child = cur_right_child
 
 # **************************************************************************** #
 #                             utility function
