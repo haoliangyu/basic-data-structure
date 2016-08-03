@@ -9,6 +9,9 @@ class BinTree(object):
     def size(self):
         return self.__size
 
+    def set_size(self, size):
+        self.__size = size
+
     def update_height(self, node):
         left_height = -1 if node.left_child is None else node.left_child.get_height()
         right_height = -1 if node.right_child is None else node.right_child.get_height()

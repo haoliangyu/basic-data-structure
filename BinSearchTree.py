@@ -28,7 +28,7 @@ class BinSearchTree(BinTree):
             parent['node'].right_child = child_node
 
         self.update_height_above(child_node)
-        self.__size += 1
+        self.set_size(self.size() + 1)
 
         return child_node
 
@@ -47,7 +47,7 @@ class BinSearchTree(BinTree):
 
         self.remove_at(node, parent)
         self.update_height_above(parent['node'])
-        self.__size -= 1
+        self.set_size(self.size() - 1)
 
         return True
 
@@ -56,14 +56,15 @@ class BinSearchTree(BinTree):
         succ = None
 
         if not node.has_left_child():
-            succ = node = node.right_child
+            succ = node.right_child
         elif not node.has_right_child():
-            succ = node = node.left_child
+            succ = node.left_child
         else:
             w = self.succ(w)
             w.swap(node)
 
             w_parent = w.parent
+            # if w_parent is not None:
             if w_parent is node:
                 w_parent.right_child = succ = w.right_child
             else:
@@ -73,5 +74,12 @@ class BinSearchTree(BinTree):
 
         if succ is not None:
             succ.parent = parent['node']
+
+            if parent['node'] is None:
+                self.root = succ
+            elif parent['node'].data < succ.data:
+                parent['node'].right_child = succ
+            else:
+                parent['node'].left_child = succ
 
         return succ
