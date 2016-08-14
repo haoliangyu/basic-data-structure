@@ -21,3 +21,5 @@ basic data strcture in python from THU Data Structure 3rd Edition, including:
 * DisjointSet based on Vector and Edge (Chapter 6)
 
 * BinSearchTree based on BinTree (Chapter 7)
+
+* AVLTree based on BinSearchTree (Chapter 7)

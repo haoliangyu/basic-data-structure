@@ -65,7 +65,9 @@ class BinTree(object):
 
     def remove(self, node):
         if node.is_root():
-            return self.__size
+            self.root = None
+            self.__size = 0
+            return 1
         elif node.is_left_child():
             node.parent.left_child = None
         else:
@@ -111,14 +113,14 @@ class BinTree(object):
         if node is None:
             return
 
-        self.trav_pre_r(node.left_child, visit)
-        self.trav_pre_r(node.right_child, visit)
+        self.trav_post_r(node.left_child, visit)
+        self.trav_post_r(node.right_child, visit)
         visit(node)
 
     def trav_in_r(self, node, visit):
         if node is None:
             return
 
-        self.trav_pre_r(node.left_child, visit)
+        self.trav_in_r(node.left_child, visit)
         visit(node)
-        self.trav_pre_r(node.right_child, visit)
+        self.trav_in_r(node.right_child, visit)
