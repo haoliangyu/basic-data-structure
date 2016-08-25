@@ -19,29 +19,38 @@ class Node(object):
         self.succ_node = node
         return node
 
+    def is_header(self):
+        return self.pred_node is None
+
+    def is_tailer(self):
+        return self.succ_node is None
+
+    def is_first(self):
+        return False if self.is_header() else self.pred_node.is_header()
+
     def __str__(self):
         return str(self.data)
 
 class LinkedList(object):
 
     def __init__(self, fromList=None):
-        self.head = Node(None, None, None)
+        self.header = Node(None, None, None)
         self.tailer = Node(None, None, None)
 
-        self.head.succ_node = self.tailer
-        self.tailer.pred_node = self.head
+        self.header.succ_node = self.tailer
+        self.tailer.pred_node = self.header
 
         self.__size = 0
 
         if type(fromList) is list and len(fromList) > 0:
-            node = self.head.insert_as_succ(fromList[0])
+            node = self.header.insert_as_succ(fromList[0])
             self.__size = len(fromList)
             for i in range(1, len(fromList)):
                 node = node.insert_as_succ(fromList[i])
 
     def __str__(self):
         data_list = []
-        node = self.head.succ_node
+        node = self.header.succ_node
 
         while node.data is not None:
             data_list.append(node.data)
@@ -86,7 +95,7 @@ class LinkedList(object):
             return
 
         i = self.__size
-        left = self.head.succ_node
+        left = self.header.succ_node
         right = self.tailer.pred_node
 
         while i > 1:
@@ -97,7 +106,7 @@ class LinkedList(object):
 
     def insert_as_first(self, data):
         self.__size += 1
-        return self.head.insert_as_succ(data)
+        return self.header.insert_as_succ(data)
 
     def insert_as_last(self, data):
         self.__size += 1
@@ -117,7 +126,7 @@ class LinkedList(object):
     def deduplicate(self):
         if self.__size < 2: return False
         old_size = self.__size
-        node = self.head.succ_node
+        node = self.header.succ_node
         r = 0
         while node.data is not None:
             match = self.find(node.data, r, node)
@@ -130,7 +139,7 @@ class LinkedList(object):
 
     def uniquify(self):
         old_size = self.__size
-        node = self.head.succ_node
+        node = self.header.succ_node
         while node.succ_node is not None:
             if node.data == node.succ_node.data:
                 self.remove(node.succ_node)
@@ -160,7 +169,7 @@ class LinkedList(object):
 
     def disordered(self):
         if self.__size < 2: return False
-        node = self.head.succ_node
+        node = self.header.succ_node
         while node.succ_node.data is not None:
             if node.succ_node.data < node.data:
                 return True
@@ -179,17 +188,17 @@ class LinkedList(object):
         elif method == 'selection_sort':
             self.selection_sort()
         elif method == 'merge_sort':
-            self.merge_sort(self.head.succ_node, self.__size)
+            self.merge_sort(self.header.succ_node, self.__size)
         else:
             return
 
     def insert_sort(self):
         if self.__size < 2: return
-        node = self.head.succ_node
+        node = self.header.succ_node
         r = 0
         while r < self.__size:
             match = self.search(node.data, r, node)
-            self.insert_a(self.head if match is None else match, node.data)
+            self.insert_a(self.header if match is None else match, node.data)
             self.remove(node)
             node = node.succ_node
             r += 1
@@ -201,7 +210,7 @@ class LinkedList(object):
         def select_max(r):
             max_data = -sys.maxsize - 1
             max_node = None
-            node = self.head.succ_node
+            node = self.header.succ_node
             n = 0
             while n < r and node.data is not None:
                 if node.data > max_data:
@@ -249,11 +258,23 @@ class LinkedList(object):
 
         self.__merge(node_p, middle, node_q, n - middle)
 
+    def first(self):
+        return self.header.succ_node
+
+    def last(self):
+        return self.tailer.pred_node
+
+    def empty(self):
+        return self.__size == 0
+
+    def set_size(self, size):
+        self.__size = size
+
     def traverse(self, func):
         if self.__size < 1:
             return
 
-        node = self.head.succ_node
+        node = self.header.succ_node
         while node.data is not None:
             func(node)
             node = node.succ_node
@@ -275,17 +296,17 @@ class LinkedList(object):
             return None
 
         n = k
-        node = self.head.succ_node
+        node = self.header.succ_node
 
         while self.__size > 1:
             while n > 1:
                 n -= 1
                 node = node.succ_node
                 if node.data is None:
-                    node = self.head.succ_node
+                    node = self.header.succ_node
 
             self.remove(node)
             node = node.succ_node
             n = k
 
-        return self.head.succ_node
+        return self.header.succ_node

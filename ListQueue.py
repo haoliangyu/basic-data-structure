@@ -10,9 +10,9 @@ class ListQueue(LinkedList):
 
     def dequeque(self):
         if not self.empty():
-            return self.remove(self.head.succ_node)
+            return self.remove(self.header.succ_node)
 
         return None
 
     def front(self):
-        return None if self.empty() else self.head.succ_node.data
+        return None if self.empty() else self.header.succ_node.data

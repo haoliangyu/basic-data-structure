@@ -46,7 +46,7 @@ class ListStack(LinkedList):
 
     def get_data(self):
         data = []
-        node = self.head.succ_node
+        node = self.header.succ_node
 
         while node.data is not None:
             data.append(node.data)

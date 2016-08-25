@@ -23,3 +23,5 @@ basic data strcture in python from THU Data Structure 3rd Edition, including:
 * BinSearchTree based on BinTree (Chapter 7)
 
 * AVLTree based on BinSearchTree (Chapter 7)
+
+* SkipList based on LinkedList (Chapter 9)

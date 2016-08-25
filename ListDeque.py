@@ -13,14 +13,14 @@ class ListQueue(LinkedList):
 
     def remove_front(self):
         if not self.empty():
-            return self.remove(self.head.succ_node)
+            return self.remove(self.header.succ_node)
 
     def remove_rear(self):
         if not self.empty():
             return self.remove(self.tailer.pred_node)
 
     def front(self):
-        return None if self.empty() else self.head.succ_node.data
+        return None if self.empty() else self.header.succ_node.data
 
     def rear(self):
         return None if self.empty() else self.tailer.pred_node.data
