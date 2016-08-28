@@ -14,15 +14,24 @@ class SkipList(Dictionary, LinkedList):
         self.__size = 0
 
     def __str__(self):
-        qlist = self.last()
-        node = qlist.data.first()
-        values = []
+        '''print every level of a skip list'''
+        levels = []
+        qlist = self.first()
 
-        while not node.is_tailer():
-            values.append(node.data.value)
-            node = node.succ_node
+        while not qlist.is_tailer():
+            count = 1
+            level = ''
+            node = qlist.data.first()
 
-        return str(values)
+            while not node.is_tailer():
+                level += ' %s~#%d' % (str(node.data.value), count)
+                count += 1
+                node = node.succ_node
+
+            levels.append(level)
+            qlist = qlist.succ_node
+
+        return '\n'.join(levels)
 
     def size(self):
         return self.__size
@@ -65,8 +74,16 @@ class SkipList(Dictionary, LinkedList):
 
             if p.is_header():
                 if qlist.is_first():
-                    qlist.insert_as_pred(QuadList())
+                    new_list = qlist.insert_as_pred(QuadList())
+
+                    qlist.data.header.above_node = new_list.data.header
+                    new_list.data.header.below_node = qlist.data.header
+
+                    qlist.data.tailer.above_node = new_list.data.tailer
+                    new_list.data.tailer.below_node = qlist.data.tailer
+
                     self.__level += 1
+
                 p = qlist.pred_node.data.header
             else:
                 p = p.above_node
@@ -112,6 +129,10 @@ class SkipList(Dictionary, LinkedList):
 
     def skipSearch(self, qlist, p, key):
         while True:
+
+            if p.is_header():
+                p = p.succ_node
+
             while not p.is_tailer() and p.data.key <= key:
                 p = p.succ_node
 
@@ -119,9 +140,6 @@ class SkipList(Dictionary, LinkedList):
 
             if not p.is_header() and p.data.key == key:
                 return p
-
-            if p.is_bottom():
-                return None
 
             qlist = qlist.succ_node
 
