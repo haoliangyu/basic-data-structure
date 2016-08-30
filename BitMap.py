@@ -2,11 +2,11 @@ from bitarray import bitarray
 
 class BitMap(object):
 
-    def __init__(self):
-        self.data = 20 * bitarray([False])
+    def __init__(self, size=20):
+        self.data = size * bitarray([False])
 
     def set(self, k):
-        if k > len(self.data):
+        while k > len(self.data):
             self.data = (len(self.data) * bitarray([False])).extend(self.data)
 
         self.data[k] = True
