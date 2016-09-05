@@ -133,7 +133,7 @@ class SkipList(Dictionary, LinkedList):
             if p.is_header():
                 p = p.succ_node
 
-            while not p.is_tailer() and p.data.key <= key:
+            while not p.is_tailer() and p.data.key < key:
                 p = p.succ_node
 
             p = p.pred_node

@@ -99,7 +99,7 @@ class GraphList(object):
 
     def insert_edge(self, data, weight, i, j):
 
-        if (self.exists(i, j)):
+        if self.exists(i, j):
             return
 
         start = self.vertices[i].data['vertex']

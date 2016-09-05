@@ -27,3 +27,5 @@ basic data strcture in python from THU Data Structure 3rd Edition, including:
 * SkipList based on LinkedList (Chapter 9)
 
 * HashTable (Chapter 9)
+
+* Bucket for bucket sort (Chapter 9)

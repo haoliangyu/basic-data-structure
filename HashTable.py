@@ -60,18 +60,22 @@ class HashTable(Dictionary):
 
     def __probe_for_hit(self, key):
         x = key % self.M
+        i = 0
 
         while (self.entries[x] is not None and self.entries[x].key != key) or \
               (self.entries[x] is None and self.lazily_removed(x)):
-            x = (x + 1) % self.M
+            x = (x + i**2) % self.M
+            i += 1
 
         return x
 
     def __probe_for_free(self, key):
         x = key % self.M
+        i = 1
 
         while self.entries[x] is not None:
-            x = (x + 1) % self.M
+            x = (x + i**2) % self.M
+            i += 1
 
         return x
 
