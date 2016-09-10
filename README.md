@@ -29,3 +29,5 @@ basic data strcture in python from THU Data Structure 3rd Edition, including:
 * HashTable (Chapter 9)
 
 * Bucket for bucket sort (Chapter 9)
+
+* Heap (Chapter 10)
